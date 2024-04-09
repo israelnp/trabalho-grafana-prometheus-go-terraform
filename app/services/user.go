@@ -4,26 +4,23 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/db"
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/models"
 )
 
 type UserService struct {
-	Database *db.Database
+	Conn *sql.DB
 }
 
 func NewUserService(dbConnection *sql.DB) *UserService {
 	return &UserService{
-		Database: &db.Database{
-			Conn: dbConnection,
-		},
+		Conn: dbConnection,
 	}
 }
 
 func (userService *UserService) CreateUser(user models.User) (*models.User, error) {
 	log.Println("inserting user")
 
-	query, err := userService.Database.Conn.Prepare("INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)")
+	query, err := userService.Conn.Prepare("INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)")
 	if err != nil {
 		log.Printf("error preparing query %v \n", err)
 		return nil, err
@@ -54,7 +51,7 @@ func (userService *UserService) CreateUser(user models.User) (*models.User, erro
 func (userService *UserService) ListUsers() ([]models.User, error) {
 	log.Println("listing users")
 
-	rows, err := userService.Database.Conn.Query("SELECT id, name, email, password FROM users")
+	rows, err := userService.Conn.Query("SELECT id, name, email, password FROM users")
 	if err != nil {
 		log.Printf("error querying users %v \n", err)
 		return nil, err

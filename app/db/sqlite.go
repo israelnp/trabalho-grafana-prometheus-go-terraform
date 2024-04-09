@@ -7,16 +7,10 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type Database struct {
-	Conn *sql.DB
-}
-
-func NewDatabase() *Database {
+func NewDatabase() *sql.DB {
 	conn := connect()
 	createTable(conn)
-	return &Database{
-		Conn: conn,
-	}
+	return conn
 }
 
 func connect() *sql.DB {
@@ -28,6 +22,15 @@ func connect() *sql.DB {
 	log.Println("connected to the database!")
 
 	return conn
+}
+
+func Close(conn *sql.DB) {
+	log.Println("closing the database connection...")
+	err := conn.Close()
+	if err != nil {
+		log.Fatalf("Error closing the database connection: %v", err)
+	}
+	log.Println("database connection closed!")
 }
 
 func createTable(conn *sql.DB) {

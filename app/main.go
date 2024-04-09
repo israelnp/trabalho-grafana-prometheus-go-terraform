@@ -14,9 +14,9 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
-	db := db.NewDatabase()
-	defer db.Conn.Close()
-	routes.UseRoutes(router, db.Conn)
+	conn := db.NewDatabase()
+	defer db.Close(conn)
+	routes.UseRoutes(router, conn)
 
 	log.Println("server started on port 3000")
 	err := http.ListenAndServe(":3000", router)
