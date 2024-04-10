@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/db"
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/rest/routes"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
@@ -17,6 +18,8 @@ func main() {
 	conn := db.NewDatabase()
 	defer db.Close(conn)
 	routes.UseRoutes(router, conn)
+
+	router.Handle("/metrics", promhttp.Handler())
 
 	log.Println("server started on port 3000")
 	err := http.ListenAndServe(":3000", router)

@@ -1,0 +1,26 @@
+version: "3.4"
+
+networks:
+  go-app-network:
+    driver: bridge
+
+services:
+  go-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: go-app
+    ports:
+      - "3000:3000"
+    networks:
+      - go-app-network
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: Dockerfile.prom
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - go-app-network
