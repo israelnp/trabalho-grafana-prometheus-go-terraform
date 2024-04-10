@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/db"
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/rest/routes"
+	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/services"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -17,7 +18,8 @@ func main() {
 
 	conn := db.NewDatabase()
 	defer db.Close(conn)
-	routes.UseRoutes(router, conn)
+	promService := services.NewPrometheusService()
+	routes.UseRoutes(router, conn, promService)
 
 	router.Handle("/metrics", promhttp.Handler())
 
