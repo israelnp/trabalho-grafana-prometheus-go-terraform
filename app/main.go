@@ -21,8 +21,8 @@ func main() {
 
 	router.Handle("/metrics", promhttp.Handler())
 
-	log.Println("server started on port 3000")
-	err := http.ListenAndServe(":3000", router)
+	log.Println("server started on port 5000")
+	err := http.ListenAndServe(":5000", router)
 	if err != nil {
 		log.Fatal("error starting server", err)
 	}
