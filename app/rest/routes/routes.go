@@ -8,5 +8,5 @@ import (
 )
 
 func UseRoutes(router *chi.Mux, dbConnection *sql.DB, promService *services.PrometheusService) {
-	NewUserRoutes(router, dbConnection, promService)
+	NewUserRoutes(router, dbConnection)
 }

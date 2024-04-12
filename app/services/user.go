@@ -8,19 +8,19 @@ import (
 )
 
 type UserService struct {
-	Conn *sql.DB
+	conn *sql.DB
 }
 
 func NewUserService(dbConnection *sql.DB) *UserService {
 	return &UserService{
-		Conn: dbConnection,
+		conn: dbConnection,
 	}
 }
 
 func (userService *UserService) CreateUser(user models.User) (*models.User, error) {
 	log.Println("inserting user")
 
-	query, err := userService.Conn.Prepare("INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)")
+	query, err := userService.conn.Prepare("INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)")
 	if err != nil {
 		log.Printf("error preparing query %v \n", err)
 		return nil, err
@@ -51,7 +51,7 @@ func (userService *UserService) CreateUser(user models.User) (*models.User, erro
 func (userService *UserService) ListUsers() ([]models.User, error) {
 	log.Println("listing users")
 
-	rows, err := userService.Conn.Query("SELECT id, name, email, password FROM users")
+	rows, err := userService.conn.Query("SELECT id, name, email, password FROM users")
 	if err != nil {
 		log.Printf("error querying users %v \n", err)
 		return nil, err

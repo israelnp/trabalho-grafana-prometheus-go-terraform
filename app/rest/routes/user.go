@@ -8,9 +8,9 @@ import (
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/services"
 )
 
-func NewUserRoutes(router *chi.Mux, dbConnection *sql.DB, promService *services.PrometheusService) {
+func NewUserRoutes(router *chi.Mux, dbConnection *sql.DB) {
 	userService := services.NewUserService(dbConnection)
-	userHandler := handlers.NewUserHandler(userService, promService)
+	userHandler := handlers.NewUserHandler(userService)
 
 	router.Post("/users", userHandler.CreateUser)
 	router.Get("/users", userHandler.ListUsers)
