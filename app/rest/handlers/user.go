@@ -3,7 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/models"
 	"github.com/israelnp/trabalho-grafana-prometheus-go-terraform/services"
@@ -17,6 +19,31 @@ func NewUserHandler(userService *services.UserService) *UserHandler {
 	return &UserHandler{
 		userService: userService,
 	}
+}
+
+func (userHandler *UserHandler) SimulateDatabaseRead(w http.ResponseWriter, r *http.Request) {
+	min := 1000
+	timeOut := 3000
+	randomMilliseconds := rand.Intn(5000-min+1) + min
+	time.Sleep(time.Duration(randomMilliseconds) * time.Millisecond)
+
+	if randomMilliseconds > timeOut {
+		log.Printf("timeout reading database")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	log.Printf("reading database in less than %d milliseconds", randomMilliseconds)
+	w.WriteHeader(http.StatusOK)
+}
+
+func (userHandler *UserHandler) TakesRandomMiliseconds(w http.ResponseWriter, r *http.Request) {
+	min := 100
+	max := 1000
+	randomMilliseconds := rand.Intn(max-min+1) + min
+	time.Sleep(time.Duration(randomMilliseconds) * time.Millisecond)
+	log.Printf("this request took only %d milliseconds", randomMilliseconds)
+	w.WriteHeader(http.StatusOK)
 }
 
 func (userHandler *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {

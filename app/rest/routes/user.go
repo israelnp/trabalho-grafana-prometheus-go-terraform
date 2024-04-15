@@ -14,4 +14,6 @@ func NewUserRoutes(router *chi.Mux, dbConnection *sql.DB) {
 
 	router.Post("/users", userHandler.CreateUser)
 	router.Get("/users", userHandler.ListUsers)
+	router.Get("/bad_data_base_read", userHandler.SimulateDatabaseRead)
+	router.Get("/random_miliseconds", userHandler.TakesRandomMiliseconds)
 }
