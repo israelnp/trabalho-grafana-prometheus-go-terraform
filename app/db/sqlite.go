@@ -35,7 +35,7 @@ func Close(conn *sql.DB) {
 
 func createTable(conn *sql.DB) {
 	log.Println("creating users table...")
-	_, err := conn.Exec(`CREATE TABLE IF NOT EXISTS users (
+	result, err := conn.Exec(`CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 		name TEXT,
 		email TEXT NOT NULL UNIQUE,
@@ -43,6 +43,16 @@ func createTable(conn *sql.DB) {
 	)`)
 	if err != nil {
 		log.Fatalf("Error creating table: %v", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		log.Fatalf("Error getting rows affected: %v", err)
+	}
+
+	if rowsAffected == 0 {
+		log.Println("table already exists!")
+		return
 	}
 	log.Println("table created!")
 }
