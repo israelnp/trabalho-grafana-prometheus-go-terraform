@@ -21,6 +21,16 @@ func NewUserHandler(userService *services.UserService) *UserHandler {
 	}
 }
 
+func (userHandler *UserHandler) RandomStatusCodes(w http.ResponseWriter, r *http.Request) {
+	statusCodes := []int{http.StatusOK, http.StatusInternalServerError, http.StatusBadRequest}
+	randomStatusCode := rand.Intn(len(statusCodes))
+	log.Printf("random status code index %d", randomStatusCode)
+	time.Sleep(300 * time.Millisecond)
+
+	log.Printf("returning status code %d", statusCodes[randomStatusCode])
+	w.WriteHeader(statusCodes[randomStatusCode])
+}
+
 func (userHandler *UserHandler) SimulateDatabaseRead(w http.ResponseWriter, r *http.Request) {
 	min := 1000
 	timeOut := 3000
