@@ -1,3 +1,14 @@
+variable "access_key" {
+  type        = string
+  description = ""
+}
+
+variable "secret_key" {
+  type        = string
+  description = ""
+}
+
+
 variable "aws_region" {
   type        = string
   description = ""
