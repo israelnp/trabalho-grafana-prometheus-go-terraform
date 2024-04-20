@@ -16,3 +16,44 @@ provider "aws" {
   region  = var.aws_region
   profile = var.aws_profile
 }
+
+module "network" {
+  source                = "./network"
+  vpc_cidr_block        = var.vpc_cidr_block
+  az_subnets_cidr_block = var.az_subnets_cidr_block
+  common_tags           = local.common_tags
+}
+
+module "vpnServer" {
+  source        = "./vpn-server"
+  image_id      = var.image_id
+  instance_type = var.instance_type
+  aws_subnet_id = module.network.public_az_a_subnet_id
+  key_name      = var.instance_key_name
+  vpc_id        = module.network.vpc_id
+  common_tags   = local.common_tags
+}
+
+module "appServer" {
+  source        = "./app-server"
+  image_id      = var.image_id
+  instance_type = var.instance_type
+  aws_subnet_id = module.network.public_az_a_subnet_id
+  key_name      = var.instance_key_name
+  vpc_id        = module.network.vpc_id
+  common_tags   = local.common_tags
+}
+
+module "monitorServer" {
+  source        = "./monitor-server"
+  image_id      = var.image_id
+  instance_type = var.instance_type
+  aws_subnet_id = module.network.public_az_a_subnet_id
+  key_name      = var.instance_key_name
+  vpc_id        = module.network.vpc_id
+  common_tags   = local.common_tags
+  target-ip     = module.appServer.app-ip
+}
+
+
+

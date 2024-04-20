@@ -1,8 +1,8 @@
 
-resource "aws_security_group" "go" {
+resource "aws_security_group" "this" {
   name        = "APP-GO-SG"
-  description = "APP GO SG"
-  vpc_id      = aws_vpc.this.id
+  description = "Allow incoming connections to app machine"
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 80
@@ -46,5 +46,5 @@ resource "aws_security_group" "go" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.common_tags, { Name = "APP GO" })
+  tags = merge(var.common_tags, { Name = "APP Machine" })
 }

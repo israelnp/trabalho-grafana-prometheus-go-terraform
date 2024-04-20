@@ -4,4 +4,4 @@ scrape_configs:
     scrape_interval: 10s
     static_configs:
       - targets:
-          - go-app:5000
+          - target-ip:5000

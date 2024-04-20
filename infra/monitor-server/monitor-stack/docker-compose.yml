@@ -1,0 +1,29 @@
+version: "3.4"
+
+networks:
+  monitor-network:
+    driver: bridge
+
+services:
+  prometheus:
+    build:
+      context: .
+      dockerfile: Dockerfile.prom
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - monitor-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - monitor-network
+
+volumes:
+  grafana-storage:
