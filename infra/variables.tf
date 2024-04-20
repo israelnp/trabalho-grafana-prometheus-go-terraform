@@ -35,7 +35,7 @@ variable "service_name" {
 variable "instance_type" {
   type        = string
   description = ""
-  default     = "t3.medium"
+  default     = "t3.large"
 }
 
 variable "instance_key_name" {
