@@ -9,6 +9,6 @@ resource "aws_instance" "this" {
   }))
   monitoring             = true
   subnet_id              = var.aws_subnet_id
-  associate_public_ip_address = true
+  associate_public_ip_address = false
   tags = merge(var.common_tags, { Name = "Monitor Machine" })
 }

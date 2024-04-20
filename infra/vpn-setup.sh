@@ -4,8 +4,5 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 git clone https://github.com/israelnp/trabalho-grafana-prometheus-go-terraform.git
 cd /trabalho-grafana-prometheus-go-terraform/infra/vpn-server/vpn-stack
-data_dir=$(pwd)/data
-mkdir -p $(data_dir)/pritunl $(data_dir)/mongodb
-touch $(data_dir)/pritunl.conf
 sudo docker-compose up -d
 

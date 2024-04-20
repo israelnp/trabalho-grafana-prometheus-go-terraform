@@ -1,14 +1,20 @@
-version: "3.3"
+version: "3"
+
 services:
   pritunl:
-    container_name: pritunl
-    image: ghcr.io/jippi/docker-pritunl
-    restart: unless-stopped
+    image: "jippi/pritunl:latest"
     privileged: true
-    network_mode: host
-    dns:
-      - 127.0.0.1
+    ports:
+      - "80:80"
+      - "443:443"
+      - "1194:1194/udp"
+      - "1194:1194/tcp"
     volumes:
-      - "./data/pritunl.conf:/etc/pritunl.conf"
-      - "./data/pritunl:/var/lib/pritunl"
-      - "./data/mongodb:/var/lib/mongodb"
+      - "pritunl_data:/var/lib/pritunl"
+      - "pritunl_db:/var/lib/mongodb"
+
+volumes:
+  pritunl_data:
+    driver: local
+  pritunl_db:
+    driver: local
