@@ -26,16 +26,11 @@ variable "aws_profile" {
   description = ""
   default     = "default"
 }
-variable "service_name" {
-  type        = string
-  description = ""
-  default     = "autoscaling-wordpress"
-}
 
 variable "instance_type" {
   type        = string
   description = ""
-  default     = "t3.medium"
+  default     = "t3.large"
 }
 
 variable "instance_key_name" {

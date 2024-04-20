@@ -1,26 +1,11 @@
-sudo tee /etc/apt/sources.list.d/pritunl.list << EOF
-deb http://repo.pritunl.com/stable/apt jammy main
-EOF
+#!/bin/bash 
+sudo wget -qO- https://get.docker.com/ | sh
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+git clone https://github.com/israelnp/trabalho-grafana-prometheus-go-terraform.git
+cd /trabalho-grafana-prometheus-go-terraform/infra/vpn-server/vpn-stack
+data_dir=$(pwd)/data
+mkdir -p $(data_dir)/pritunl $(data_dir)/mongodb
+touch $(data_dir)/pritunl.conf
+sudo docker-compose up -d
 
-# Import signing key from keyserver
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com --recv 7568D9BB55FF9E5287D586017AE645C0CF8E292A
-# Alternative import from download if keyserver offline
-curl https://raw.githubusercontent.com/pritunl/pgp/master/pritunl_repo_pub.asc | sudo apt-key add -
-
-sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list << EOF
-deb https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse
-EOF
-
-wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
-
-sudo apt update
-sudo apt --assume-yes upgrade
-
-# WireGuard server support
-sudo apt -y install wireguard wireguard-tools
-
-sudo ufw disable
-
-sudo apt -y install pritunl mongodb-org
-sudo systemctl enable mongod pritunl
-sudo systemctl start mongod pritunl
